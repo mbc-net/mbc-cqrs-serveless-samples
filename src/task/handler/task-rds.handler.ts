@@ -6,16 +6,19 @@ import {
 import { Injectable, Logger } from '@nestjs/common'
 import { PrismaService } from 'src/prisma'
 
+import { TaskAttributes } from '../dto/task-attributes.dto'
+
 @Injectable()
-export class MasterDataSyncRdsHandler implements IDataSyncHandler {
-  private readonly logger = new Logger(MasterDataSyncRdsHandler.name)
+export class TaskDataSyncRdsHandler implements IDataSyncHandler {
+  private readonly logger = new Logger(TaskDataSyncRdsHandler.name)
 
   constructor(private readonly prismaService: PrismaService) {}
 
   async up(cmd: CommandModel): Promise<any> {
     this.logger.debug(cmd)
     const sk = removeSortKeyVersion(cmd.sk)
-    await this.prismaService.master.upsert({
+    const attrs = cmd.attributes as TaskAttributes
+    await this.prismaService.task.upsert({
       where: {
         id: cmd.id,
       },
@@ -24,11 +27,13 @@ export class MasterDataSyncRdsHandler implements IDataSyncHandler {
         name: cmd.name,
         version: cmd.version,
         seq: cmd.seq,
-        atttributesMaster: cmd.attributes?.master,
         isDeleted: cmd.isDeleted || false,
         updatedAt: cmd.updatedAt,
         updatedBy: cmd.updatedBy,
         updatedIp: cmd.updatedIp,
+        description: attrs?.description,
+        status: attrs?.status,
+        dueDate: attrs?.dueDate,
       },
       create: {
         id: cmd.id,
@@ -36,20 +41,20 @@ export class MasterDataSyncRdsHandler implements IDataSyncHandler {
         csk: cmd.sk,
         pk: cmd.pk,
         sk,
-        masterTypeCode: sk.substring(0, sk.indexOf('#')),
-        masterCode: sk.substring(sk.indexOf('#') + 1),
         code: sk,
         name: cmd.name,
         version: cmd.version,
         tenantCode: cmd.tenantCode,
         seq: cmd.seq,
-        atttributesMaster: cmd.attributes?.master,
         createdAt: cmd.createdAt,
         createdBy: cmd.createdBy,
         createdIp: cmd.createdIp,
         updatedAt: cmd.updatedAt,
         updatedBy: cmd.updatedBy,
         updatedIp: cmd.updatedIp,
+        description: attrs?.description,
+        status: attrs?.status,
+        dueDate: attrs?.dueDate,
       },
     })
   }

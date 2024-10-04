@@ -143,7 +143,7 @@ functions:
       - stream:
           type: dynamodb
           maximumRetryAttempts: 10
-          arn: ${env:LOCAL_DDB_MASTER_STREAM}
+          arn: ${env:LOCAL_DDB_TODO_TASK_STREAM}
           filterPatterns:
             - eventName: [INSERT]
 

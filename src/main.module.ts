@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 
 import { CustomEventFactory } from './event-factory'
-import { MasterModule } from './master/master.module'
 import { prismaLoggingMiddleware, PrismaModule } from './prisma'
+import { TaskModule } from './task/task.module'
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { prismaLoggingMiddleware, PrismaModule } from './prisma'
         explicitConnect: false,
       },
     }),
-    MasterModule,
+    TaskModule,
   ],
   providers: [CustomEventFactory],
 })

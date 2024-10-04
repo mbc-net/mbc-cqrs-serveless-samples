@@ -1,0 +1,368 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-tenant-code",
+            "schema": {}
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["main"]
+      }
+    },
+    "/api/task": {
+      "post": {
+        "operationId": "TaskController_create",
+        "parameters": [
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-tenant-code",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateTaskDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+              }
+            }
+          }
+        },
+        "tags": ["task"]
+      },
+      "get": {
+        "operationId": "TaskController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "pk",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "sk",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "orderBys",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-tenant-code",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TaskDataListEntity" }
+              }
+            }
+          }
+        },
+        "tags": ["task"]
+      }
+    },
+    "/api/task/{pk}/{sk}": {
+      "get": {
+        "operationId": "TaskController_findOne",
+        "parameters": [
+          {
+            "name": "pk",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "sk",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-tenant-code",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+              }
+            }
+          }
+        },
+        "tags": ["task"]
+      },
+      "patch": {
+        "operationId": "TaskController_update",
+        "parameters": [
+          {
+            "name": "pk",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "sk",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-tenant-code",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateTaskDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+              }
+            }
+          }
+        },
+        "tags": ["task"]
+      },
+      "delete": {
+        "operationId": "TaskController_remove",
+        "parameters": [
+          {
+            "name": "pk",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "sk",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "header",
+            "required": false,
+            "name": "x-tenant-code",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+              }
+            }
+          }
+        },
+        "tags": ["task"]
+      }
+    }
+  },
+  "info": {
+    "title": "serverless",
+    "description": "The serverless API",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [{ "url": "http://localhost:3000/", "description": "local" }],
+  "components": {
+    "securitySchemes": {
+      "Api-Key": { "type": "apiKey", "in": "header", "name": "Authorization" }
+    },
+    "schemas": {
+      "TaskAttributes": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "IN_PROGRESS", "COMPLETED", "CANCELED"]
+          },
+          "description": { "type": "string" },
+          "dueDate": { "type": "string" }
+        }
+      },
+      "CreateTaskDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "attributes": { "$ref": "#/components/schemas/TaskAttributes" }
+        },
+        "required": ["name"]
+      },
+      "TaskDataEntity": {
+        "type": "object",
+        "properties": {
+          "cpk": { "type": "string" },
+          "csk": { "type": "string" },
+          "source": { "type": "string" },
+          "requestId": { "type": "string" },
+          "createdAt": { "format": "date-time", "type": "string" },
+          "updatedAt": { "format": "date-time", "type": "string" },
+          "createdBy": { "type": "string" },
+          "updatedBy": { "type": "string" },
+          "createdIp": { "type": "string" },
+          "updatedIp": { "type": "string" },
+          "pk": { "type": "string" },
+          "sk": { "type": "string" },
+          "id": { "type": "string" },
+          "code": { "type": "string" },
+          "name": { "type": "string" },
+          "version": { "type": "number" },
+          "tenantCode": { "type": "string" },
+          "type": { "type": "string" },
+          "seq": { "type": "number" },
+          "ttl": { "type": "number" },
+          "isDeleted": { "type": "boolean" },
+          "attributes": { "$ref": "#/components/schemas/TaskAttributes" }
+        },
+        "required": [
+          "pk",
+          "sk",
+          "id",
+          "code",
+          "name",
+          "version",
+          "tenantCode",
+          "type",
+          "attributes"
+        ]
+      },
+      "DataEntity": {
+        "type": "object",
+        "properties": {
+          "cpk": { "type": "string" },
+          "csk": { "type": "string" },
+          "source": { "type": "string" },
+          "requestId": { "type": "string" },
+          "createdAt": { "format": "date-time", "type": "string" },
+          "updatedAt": { "format": "date-time", "type": "string" },
+          "createdBy": { "type": "string" },
+          "updatedBy": { "type": "string" },
+          "createdIp": { "type": "string" },
+          "updatedIp": { "type": "string" },
+          "pk": { "type": "string" },
+          "sk": { "type": "string" },
+          "id": { "type": "string" },
+          "code": { "type": "string" },
+          "name": { "type": "string" },
+          "version": { "type": "number" },
+          "tenantCode": { "type": "string" },
+          "type": { "type": "string" },
+          "seq": { "type": "number" },
+          "ttl": { "type": "number" },
+          "isDeleted": { "type": "boolean" }
+        },
+        "required": [
+          "pk",
+          "sk",
+          "id",
+          "code",
+          "name",
+          "version",
+          "tenantCode",
+          "type"
+        ]
+      },
+      "TaskDataListEntity": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "number" },
+          "lastSk": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DataEntity" }
+          }
+        },
+        "required": ["items"]
+      },
+      "UpdateTaskAttributes": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "IN_PROGRESS", "COMPLETED", "CANCELED"]
+          },
+          "description": { "type": "string" },
+          "dueDate": { "type": "string" }
+        }
+      },
+      "UpdateTaskDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "isDeleted": { "type": "boolean" },
+          "attributes": { "$ref": "#/components/schemas/UpdateTaskAttributes" }
+        }
+      }
+    }
+  },
+  "security": [{ "Api-Key": [] }]
+}
