@@ -8,7 +8,7 @@ import {
   IInvoke,
   toISOStringWithTimezone,
   VERSION_FIRST,
-} from '@mbc-cqrs-severless/core'
+} from '@mbc-cqrs-serverless/core'
 import {
   BadRequestException,
   Injectable,

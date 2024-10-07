@@ -1,4 +1,4 @@
-import { SearchDto } from '@mbc-cqrs-severless/core'
+import { SearchDto } from '@mbc-cqrs-serverless/core'
 import { TaskStatus } from '@prisma/client'
 import { Transform } from 'class-transformer'
 import { IsBoolean, IsDateString, IsEnum, IsOptional } from 'class-validator'

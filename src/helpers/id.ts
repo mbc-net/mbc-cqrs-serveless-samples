@@ -1,4 +1,4 @@
-import { KEY_SEPARATOR } from '@mbc-cqrs-severless/core'
+import { KEY_SEPARATOR } from '@mbc-cqrs-serverless/core'
 import { ulid } from 'ulid'
 
 export const TASK_PK_PREFIX = 'TASK'

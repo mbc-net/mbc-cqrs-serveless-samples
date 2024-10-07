@@ -1,4 +1,4 @@
-import { CommandEntity } from '@mbc-cqrs-severless/core'
+import { CommandEntity } from '@mbc-cqrs-serverless/core'
 
 import { TaskAttributes } from '../dto/task-attributes.dto'
 

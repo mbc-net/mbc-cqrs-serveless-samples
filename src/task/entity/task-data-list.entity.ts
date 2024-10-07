@@ -1,4 +1,4 @@
-import { DataListEntity } from '@mbc-cqrs-severless/core'
+import { DataListEntity } from '@mbc-cqrs-serverless/core'
 
 import { TaskDataEntity } from './task-data.entity'
 
