@@ -16,9 +16,9 @@
         "tags": ["main"]
       }
     },
-    "/api/task": {
+    "/api/todo": {
       "post": {
-        "operationId": "TaskController_create",
+        "operationId": "TodoController_create",
         "parameters": [
           {
             "in": "header",
@@ -31,7 +31,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateTaskDto" }
+              "schema": { "$ref": "#/components/schemas/CreateTodoDto" }
             }
           }
         },
@@ -40,15 +40,15 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+                "schema": { "$ref": "#/components/schemas/TodoDataEntity" }
               }
             }
           }
         },
-        "tags": ["task"]
+        "tags": ["todo"]
       },
       "get": {
-        "operationId": "TaskController_findAll",
+        "operationId": "TodoController_findAll",
         "parameters": [
           {
             "name": "page",
@@ -104,17 +104,17 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/TaskDataListEntity" }
+                "schema": { "$ref": "#/components/schemas/TodoDataListEntity" }
               }
             }
           }
         },
-        "tags": ["task"]
+        "tags": ["todo"]
       }
     },
-    "/api/task/{pk}/{sk}": {
+    "/api/todo/{pk}/{sk}": {
       "get": {
-        "operationId": "TaskController_findOne",
+        "operationId": "TodoController_findOne",
         "parameters": [
           {
             "name": "pk",
@@ -140,15 +140,15 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+                "schema": { "$ref": "#/components/schemas/TodoDataEntity" }
               }
             }
           }
         },
-        "tags": ["task"]
+        "tags": ["todo"]
       },
       "patch": {
-        "operationId": "TaskController_update",
+        "operationId": "TodoController_update",
         "parameters": [
           {
             "name": "pk",
@@ -173,7 +173,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdateTaskDto" }
+              "schema": { "$ref": "#/components/schemas/UpdateTodoDto" }
             }
           }
         },
@@ -182,15 +182,15 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+                "schema": { "$ref": "#/components/schemas/TodoDataEntity" }
               }
             }
           }
         },
-        "tags": ["task"]
+        "tags": ["todo"]
       },
       "delete": {
-        "operationId": "TaskController_remove",
+        "operationId": "TodoController_remove",
         "parameters": [
           {
             "name": "pk",
@@ -216,12 +216,12 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/TaskDataEntity" }
+                "schema": { "$ref": "#/components/schemas/TodoDataEntity" }
               }
             }
           }
         },
-        "tags": ["task"]
+        "tags": ["todo"]
       }
     }
   },
@@ -238,7 +238,7 @@
       "Api-Key": { "type": "apiKey", "in": "header", "name": "Authorization" }
     },
     "schemas": {
-      "TaskAttributes": {
+      "TodoAttributes": {
         "type": "object",
         "properties": {
           "status": {
@@ -249,15 +249,15 @@
           "dueDate": { "type": "string" }
         }
       },
-      "CreateTaskDto": {
+      "CreateTodoDto": {
         "type": "object",
         "properties": {
           "name": { "type": "string" },
-          "attributes": { "$ref": "#/components/schemas/TaskAttributes" }
+          "attributes": { "$ref": "#/components/schemas/TodoAttributes" }
         },
         "required": ["name"]
       },
-      "TaskDataEntity": {
+      "TodoDataEntity": {
         "type": "object",
         "properties": {
           "cpk": { "type": "string" },
@@ -281,7 +281,7 @@
           "seq": { "type": "number" },
           "ttl": { "type": "number" },
           "isDeleted": { "type": "boolean" },
-          "attributes": { "$ref": "#/components/schemas/TaskAttributes" }
+          "attributes": { "$ref": "#/components/schemas/TodoAttributes" }
         },
         "required": [
           "pk",
@@ -331,7 +331,7 @@
           "type"
         ]
       },
-      "TaskDataListEntity": {
+      "TodoDataListEntity": {
         "type": "object",
         "properties": {
           "total": { "type": "number" },
@@ -343,7 +343,7 @@
         },
         "required": ["items"]
       },
-      "UpdateTaskAttributes": {
+      "UpdateTodoAttributes": {
         "type": "object",
         "properties": {
           "status": {
@@ -354,12 +354,12 @@
           "dueDate": { "type": "string" }
         }
       },
-      "UpdateTaskDto": {
+      "UpdateTodoDto": {
         "type": "object",
         "properties": {
           "name": { "type": "string" },
           "isDeleted": { "type": "boolean" },
-          "attributes": { "$ref": "#/components/schemas/UpdateTaskAttributes" }
+          "attributes": { "$ref": "#/components/schemas/UpdateTodoAttributes" }
         }
       }
     }

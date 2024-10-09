@@ -1,13 +1,13 @@
 import { KEY_SEPARATOR } from '@mbc-cqrs-serverless/core'
 import { ulid } from 'ulid'
 
-export const TASK_PK_PREFIX = 'TASK'
+export const TODO_PK_PREFIX = 'TODO'
 
-export function generateTaskPk(tenantCode: string): string {
-  return `${TASK_PK_PREFIX}${KEY_SEPARATOR}${tenantCode}`
+export function generateTodoPk(tenantCode: string): string {
+  return `${TODO_PK_PREFIX}${KEY_SEPARATOR}${tenantCode}`
 }
 
-export function generateTaskSk(): string {
+export function generateTodoSk(): string {
   return ulid()
 }
 

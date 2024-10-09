@@ -6,19 +6,19 @@ import {
 import { Injectable, Logger } from '@nestjs/common'
 import { PrismaService } from 'src/prisma'
 
-import { TaskAttributes } from '../dto/task-attributes.dto'
+import { TodoAttributes } from '../dto/todo-attributes.dto'
 
 @Injectable()
-export class TaskDataSyncRdsHandler implements IDataSyncHandler {
-  private readonly logger = new Logger(TaskDataSyncRdsHandler.name)
+export class TodoDataSyncRdsHandler implements IDataSyncHandler {
+  private readonly logger = new Logger(TodoDataSyncRdsHandler.name)
 
   constructor(private readonly prismaService: PrismaService) {}
 
   async up(cmd: CommandModel): Promise<any> {
     this.logger.debug(cmd)
     const sk = removeSortKeyVersion(cmd.sk)
-    const attrs = cmd.attributes as TaskAttributes
-    await this.prismaService.task.upsert({
+    const attrs = cmd.attributes as TodoAttributes
+    await this.prismaService.todo.upsert({
       where: {
         id: cmd.id,
       },

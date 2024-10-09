@@ -1,18 +1,18 @@
 import { Type } from 'class-transformer'
 import { IsOptional, IsString, ValidateNested } from 'class-validator'
 
-import { TaskAttributes } from './task-attributes.dto'
+import { TodoAttributes } from './todo-attributes.dto'
 
-export class CreateTaskDto {
+export class CreateTodoDto {
   @IsString()
   name: string
 
-  @Type(() => TaskAttributes)
+  @Type(() => TodoAttributes)
   @ValidateNested()
   @IsOptional()
-  attributes?: TaskAttributes
+  attributes?: TodoAttributes
 
-  constructor(partial: Partial<CreateTaskDto>) {
+  constructor(partial: Partial<CreateTodoDto>) {
     Object.assign(this, partial)
   }
 }

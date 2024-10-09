@@ -42,7 +42,7 @@ Accept: application/json
 Authorization: {{token}}
 
 ###
-GET {{apiBaseUrl}}/task
+GET {{apiBaseUrl}}/todo
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
@@ -50,29 +50,28 @@ X-Tenant-Code: MBC
 
 
 ###
-GET {{apiBaseUrl}}/task/TASK%23MBC/01J90GD0C1S1W3WK4VQP30TM29
+GET {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
 X-Tenant-Code: MBC
 
 ###
-POST {{apiBaseUrl}}/task
+POST {{apiBaseUrl}}/todo
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
 X-Tenant-Code: MBC
 
 {
-  "name": "second",
+  "name": "first",
   "attributes": {
-    "description": "desc",
-    "status": "PENDING"
+    "description": "first desc"
   }
 }
 
 ###
-PATCH {{apiBaseUrl}}/task/TASK%23MBC/01J90GD0C1S1W3WK4VQP30TM29
+PATCH {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
@@ -81,13 +80,13 @@ X-Tenant-Code: MBC
 {
   "name": "First update1",
   "attributes": {
-    "description": "Descripton for first task",
+    "description": "Descripton for first todo",
     "dueDate": "2024-10-30T03:59:43.590Z"
   }
 }
 
 ###
-DELETE {{apiBaseUrl}}/task/TASK%23MBC/01J90GD0C1S1W3WK4VQP30TM29
+DELETE {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}

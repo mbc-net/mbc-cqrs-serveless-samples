@@ -17,24 +17,24 @@ import {
 } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import {
-  generateTaskPk,
-  generateTaskSk,
+  generateTodoPk,
+  generateTodoSk,
   getOrderBys,
   parsePk,
-  TASK_PK_PREFIX,
+  TODO_PK_PREFIX,
 } from 'src/helpers'
 import { PrismaService } from 'src/prisma'
 
-import { CreateTaskDto } from './dto/create-task.dto'
-import { TaskSearchDto } from './dto/search-task.dto'
-import { TaskCommandDto } from './dto/task-command.dto'
-import { UpdateTaskDto } from './dto/update-task.dto'
-import { TaskDataEntity } from './entity/task-data.entity'
-import { TaskDataListEntity } from './entity/task-data-list.entity'
+import { CreateTodoDto } from './dto/create-todo.dto'
+import { TodoSearchDto } from './dto/search-todo.dto'
+import { TodoCommandDto } from './dto/todo-command.dto'
+import { UpdateTodoDto } from './dto/update-todo.dto'
+import { TodoDataEntity } from './entity/todo-data.entity'
+import { TodoDataListEntity } from './entity/todo-data-list.entity'
 
 @Injectable()
-export class TaskService {
-  private readonly logger = new Logger(TaskService.name)
+export class TodoService {
+  private readonly logger = new Logger(TodoService.name)
 
   constructor(
     private readonly commandService: CommandService,
@@ -43,41 +43,41 @@ export class TaskService {
   ) {}
 
   async create(
-    createDto: CreateTaskDto,
+    createDto: CreateTodoDto,
     opts: { invokeContext: IInvoke },
-  ): Promise<TaskDataEntity> {
+  ): Promise<TodoDataEntity> {
     const { tenantCode } = getUserContext(opts.invokeContext)
-    const pk = generateTaskPk(tenantCode)
-    const sk = generateTaskSk()
-    const task = new TaskCommandDto({
+    const pk = generateTodoPk(tenantCode)
+    const sk = generateTodoSk()
+    const todo = new TodoCommandDto({
       pk,
       sk,
       id: generateId(pk, sk),
       tenantCode,
       code: sk,
-      type: TASK_PK_PREFIX,
+      type: TODO_PK_PREFIX,
       version: VERSION_FIRST,
       name: createDto.name,
       attributes: createDto.attributes,
     })
-    const item = await this.commandService.publish(task, opts)
-    return new TaskDataEntity(item as TaskDataEntity)
+    const item = await this.commandService.publish(todo, opts)
+    return new TodoDataEntity(item as TodoDataEntity)
   }
 
-  async findOne(detailDto: DetailDto): Promise<TaskDataEntity> {
+  async findOne(detailDto: DetailDto): Promise<TodoDataEntity> {
     const item = await this.dataService.getItem(detailDto)
     if (!item) {
       throw new NotFoundException('Task not found!')
     }
     this.logger.debug('item:', item)
-    return new TaskDataEntity(item as TaskDataEntity)
+    return new TodoDataEntity(item as TodoDataEntity)
   }
 
   async findAll(
     tenantCode: string,
-    searchDto: TaskSearchDto,
-  ): Promise<TaskDataListEntity> {
-    const where: Prisma.TaskWhereInput = {
+    searchDto: TodoSearchDto,
+  ): Promise<TodoDataListEntity> {
+    const where: Prisma.TodoWhereInput = {
       isDeleted: searchDto.isDeleted ?? false,
       tenantCode,
     }
@@ -110,20 +110,20 @@ export class TaskService {
     const { pageSize = 10, page = 1, orderBys = ['-createdAt'] } = searchDto
 
     const [total, items] = await Promise.all([
-      this.prismaService.task.count({ where }),
-      this.prismaService.task.findMany({
+      this.prismaService.todo.count({ where }),
+      this.prismaService.todo.findMany({
         where,
         take: pageSize,
         skip: pageSize * (page - 1),
-        orderBy: getOrderBys<Prisma.TaskOrderByWithRelationInput>(orderBys),
+        orderBy: getOrderBys<Prisma.TodoOrderByWithRelationInput>(orderBys),
       }),
     ])
 
-    return new TaskDataListEntity({
+    return new TodoDataListEntity({
       total,
       items: items.map(
         (item) =>
-          new TaskDataEntity({
+          new TodoDataEntity({
             ...item,
             attributes: {
               description: item.description,
@@ -137,15 +137,15 @@ export class TaskService {
 
   async update(
     detailDto: DetailDto,
-    updateDto: UpdateTaskDto,
+    updateDto: UpdateTodoDto,
     opts: { invokeContext: IInvoke },
-  ): Promise<TaskDataEntity> {
+  ): Promise<TodoDataEntity> {
     const userContext = getUserContext(opts.invokeContext)
     const { tenantCode } = parsePk(detailDto.pk)
     if (userContext.tenantCode !== tenantCode) {
       throw new BadRequestException('Invalid tenant code')
     }
-    const data = (await this.dataService.getItem(detailDto)) as TaskDataEntity
+    const data = (await this.dataService.getItem(detailDto)) as TodoDataEntity
     if (!data) {
       throw new NotFoundException('Task not found!')
     }
@@ -164,7 +164,7 @@ export class TaskService {
       commandDto,
       opts,
     )
-    return new TaskDataEntity(item as TaskDataEntity)
+    return new TodoDataEntity(item as TodoDataEntity)
   }
 
   async remove(key: DetailDto, opts: { invokeContext: IInvoke }) {
@@ -175,7 +175,7 @@ export class TaskService {
       throw new BadRequestException('Invalid tenant code')
     }
 
-    const data = (await this.dataService.getItem(key)) as TaskDataEntity
+    const data = (await this.dataService.getItem(key)) as TodoDataEntity
     if (!data) {
       throw new NotFoundException()
     }
@@ -190,6 +190,6 @@ export class TaskService {
       opts,
     )
 
-    return new TaskDataEntity(item as any)
+    return new TodoDataEntity(item as any)
   }
 }

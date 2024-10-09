@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { TaskStatus } from '@prisma/client'
+import { TodoStatus } from '@prisma/client'
 import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator'
 
-export class TaskAttributes {
+export class TodoAttributes {
   @IsOptional()
   @IsString()
   description?: string
 
   @IsOptional()
-  @ApiProperty({ enum: TaskStatus })
-  @IsEnum(TaskStatus)
-  status?: TaskStatus
+  @ApiProperty({ enum: TodoStatus })
+  @IsEnum(TodoStatus)
+  status?: TodoStatus
 
   @IsOptional()
   @IsDateString()

@@ -13,18 +13,18 @@ datasource db {
   relationMode = "prisma"
 }
 
-enum TaskStatus {
+enum TodoStatus {
   PENDING
   IN_PROGRESS
   COMPLETED
   CANCELED
 }
 
-model Task {
+model Todo {
   id         String   @id
   cpk        String // コマンド用PK
   csk        String // コマンド用SK
-  pk         String // データ用PK, TASK#unigrab (テナントコード)
+  pk         String // データ用PK, TODO#unigrab (テナントコード)
   sk         String // データ用SK, マスタ種別コード#マスタコード
   tenantCode String   @map("tenant_code") // テナントコード, 【テナントコードマスタ】
   seq        Int      @default(0) // 並び順, 採番機能を使用する
@@ -40,12 +40,12 @@ model Task {
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(0) // 更新日時
 
   description String     @default("") @map("description")
-  status      TaskStatus @default(PENDING) @map("status")
+  status      TodoStatus @default(PENDING) @map("status")
   dueDate     DateTime?  @map("due_date")
 
   @@unique([cpk, csk])
   @@unique([pk, sk])
   @@unique([tenantCode, code])
   @@index([tenantCode, name])
-  @@map("tasks")
+  @@map("todos")
 }

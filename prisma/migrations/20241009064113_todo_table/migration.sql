@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `tasks` (
+CREATE TABLE `todos` (
     `id` VARCHAR(191) NOT NULL,
     `cpk` VARCHAR(191) NOT NULL,
     `csk` VARCHAR(191) NOT NULL,
@@ -21,9 +21,9 @@ CREATE TABLE `tasks` (
     `status` ENUM('PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELED') NOT NULL DEFAULT 'PENDING',
     `due_date` DATETIME(3) NULL,
 
-    INDEX `tasks_tenant_code_name_idx`(`tenant_code`, `name`),
-    UNIQUE INDEX `tasks_cpk_csk_key`(`cpk`, `csk`),
-    UNIQUE INDEX `tasks_pk_sk_key`(`pk`, `sk`),
-    UNIQUE INDEX `tasks_tenant_code_code_key`(`tenant_code`, `code`),
+    INDEX `todos_tenant_code_name_idx`(`tenant_code`, `name`),
+    UNIQUE INDEX `todos_cpk_csk_key`(`cpk`, `csk`),
+    UNIQUE INDEX `todos_pk_sk_key`(`pk`, `sk`),
+    UNIQUE INDEX `todos_tenant_code_code_key`(`tenant_code`, `code`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

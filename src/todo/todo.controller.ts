@@ -18,25 +18,25 @@ import {
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { CreateTaskDto } from './dto/create-task.dto'
-import { UpdateTaskDto } from './dto/update-task.dto'
-import { TaskDataEntity } from './entity/task-data.entity'
-import { TaskService } from './task.service'
+import { CreateTodoDto } from './dto/create-todo.dto'
+import { UpdateTodoDto } from './dto/update-todo.dto'
+import { TodoDataEntity } from './entity/todo-data.entity'
+import { TodoService } from './todo.service'
 
-@Controller('api/task')
-@ApiTags('task')
-export class TaskController {
-  private readonly logger = new Logger(TaskController.name)
+@Controller('api/todo')
+@ApiTags('todo')
+export class TodoController {
+  private readonly logger = new Logger(TodoController.name)
 
-  constructor(private readonly taskService: TaskService) {}
+  constructor(private readonly todoService: TodoService) {}
 
   @Post('/')
   async create(
     @INVOKE_CONTEXT() invokeContext: IInvoke,
-    @Body() createDto: CreateTaskDto,
-  ): Promise<TaskDataEntity> {
+    @Body() createDto: CreateTodoDto,
+  ): Promise<TodoDataEntity> {
     this.logger.debug('createDto:', createDto)
-    return this.taskService.create(createDto, { invokeContext })
+    return this.todoService.create(createDto, { invokeContext })
   }
 
   @Get('/')
@@ -46,22 +46,22 @@ export class TaskController {
   ) {
     this.logger.debug('searchDto:', searchDto)
     const { tenantCode } = getUserContext(invokeContext)
-    return await this.taskService.findAll(tenantCode, searchDto)
+    return await this.todoService.findAll(tenantCode, searchDto)
   }
 
   @Get('/:pk/:sk')
-  async findOne(@Param() detailDto: DetailDto): Promise<TaskDataEntity> {
-    return this.taskService.findOne(detailDto)
+  async findOne(@Param() detailDto: DetailDto): Promise<TodoDataEntity> {
+    return this.todoService.findOne(detailDto)
   }
 
   @Patch('/:pk/:sk')
   async update(
     @INVOKE_CONTEXT() invokeContext: IInvoke,
     @Param() detailDto: DetailDto,
-    @Body() updateDto: UpdateTaskDto,
+    @Body() updateDto: UpdateTodoDto,
   ) {
     this.logger.debug('updateDto:', updateDto)
-    return this.taskService.update(detailDto, updateDto, { invokeContext })
+    return this.todoService.update(detailDto, updateDto, { invokeContext })
   }
 
   @Delete('/:pk/:sk')
@@ -69,6 +69,6 @@ export class TaskController {
     @INVOKE_CONTEXT() invokeContext: IInvoke,
     @Param() detailDto: DetailDto,
   ) {
-    return this.taskService.remove(detailDto, { invokeContext })
+    return this.todoService.remove(detailDto, { invokeContext })
   }
 }

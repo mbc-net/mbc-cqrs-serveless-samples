@@ -2,15 +2,15 @@ import { CommandDto } from '@mbc-cqrs-serverless/core'
 import { Type } from 'class-transformer'
 import { IsOptional, ValidateNested } from 'class-validator'
 
-import { TaskAttributes } from './task-attributes.dto'
+import { TodoAttributes } from './todo-attributes.dto'
 
-export class TaskCommandDto extends CommandDto {
-  @Type(() => TaskAttributes)
+export class TodoCommandDto extends CommandDto {
+  @Type(() => TodoAttributes)
   @ValidateNested()
   @IsOptional()
-  attributes?: TaskAttributes
+  attributes?: TodoAttributes
 
-  constructor(partial: Partial<TaskCommandDto>) {
+  constructor(partial: Partial<TodoCommandDto>) {
     super()
     Object.assign(this, partial)
   }

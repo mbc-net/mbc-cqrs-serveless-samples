@@ -7,11 +7,11 @@ import {
   ValidateNested,
 } from 'class-validator'
 
-import { TaskAttributes } from './task-attributes.dto'
+import { TodoAttributes } from './todo-attributes.dto'
 
-export class UpdateTaskAttributes extends PartialType(TaskAttributes) {}
+export class UpdateTodoAttributes extends PartialType(TodoAttributes) {}
 
-export class UpdateTaskDto {
+export class UpdateTodoDto {
   @IsString()
   @IsOptional()
   name?: string
@@ -23,12 +23,12 @@ export class UpdateTaskDto {
   @IsOptional()
   isDeleted?: boolean
 
-  @Type(() => UpdateTaskAttributes)
+  @Type(() => UpdateTodoAttributes)
   @ValidateNested()
   @IsOptional()
-  attributes?: UpdateTaskAttributes
+  attributes?: UpdateTodoAttributes
 
-  constructor(partial: Partial<UpdateTaskDto>) {
+  constructor(partial: Partial<UpdateTodoDto>) {
     Object.assign(this, partial)
   }
 }

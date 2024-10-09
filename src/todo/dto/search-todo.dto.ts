@@ -1,12 +1,12 @@
 import { SearchDto } from '@mbc-cqrs-serverless/core'
-import { TaskStatus } from '@prisma/client'
+import { TodoStatus } from '@prisma/client'
 import { Transform } from 'class-transformer'
 import { IsBoolean, IsDateString, IsEnum, IsOptional } from 'class-validator'
 
-export class TaskSearchDto extends SearchDto {
+export class TodoSearchDto extends SearchDto {
   @IsOptional()
-  @IsEnum(TaskStatus)
-  status?: TaskStatus
+  @IsEnum(TodoStatus)
+  status?: TodoStatus
 
   @IsDateString()
   @IsOptional()
