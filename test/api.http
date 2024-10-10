@@ -1,0 +1,93 @@
+@endpoint = http://localhost:3000
+@cognitoEndpoint = http://localhost:9229
+@clientId = dnk8y7ii3wled35p3lw0l2cd7
+# account's username 
+@username = admin2
+# account's password
+@password = admin1234
+# account's email
+@email = admin2@example.com
+
+@apiBaseUrl = {{endpoint}}/api
+@eventBaseUrl = {{endpoint}}/event
+
+###
+GET {{endpoint}} HTTP/1.1
+
+###
+# login
+# @name login_cognito
+POST {{cognitoEndpoint}}
+Accept: application/json
+Content-Type: application/x-amz-json-1.1
+X-Amz-Target: AWSCognitoIdentityProviderService.InitiateAuth
+
+{
+  "AuthFlow": "USER_PASSWORD_AUTH",
+  "ClientId": "{{clientId}}",
+  "AuthParameters": {
+    "USERNAME": "{{username}}",
+    "PASSWORD": "{{password}}"
+  },
+  "ClientMetadata": {}
+}
+
+###
+@token = {{login_cognito.response.body.AuthenticationResult.IdToken}}
+###
+
+# Health
+GET {{endpoint}}
+Accept: application/json
+Authorization: {{token}}
+
+###
+GET {{apiBaseUrl}}/todo
+Accept: application/json
+Content-Type: application/json
+Authorization: {{token}}
+X-Tenant-Code: MBC
+
+
+###
+GET {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
+Accept: application/json
+Content-Type: application/json
+Authorization: {{token}}
+X-Tenant-Code: MBC
+
+###
+POST {{apiBaseUrl}}/todo
+Accept: application/json
+Content-Type: application/json
+Authorization: {{token}}
+X-Tenant-Code: MBC
+
+{
+  "name": "first",
+  "attributes": {
+    "description": "first desc"
+  }
+}
+
+###
+PATCH {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
+Accept: application/json
+Content-Type: application/json
+Authorization: {{token}}
+X-Tenant-Code: MBC
+
+{
+  "name": "First update1",
+  "attributes": {
+    "description": "Descripton for first todo",
+    "dueDate": "2024-10-30T03:59:43.590Z"
+  }
+}
+
+###
+DELETE {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
+Accept: application/json
+Content-Type: application/json
+Authorization: {{token}}
+X-Tenant-Code: MBC
