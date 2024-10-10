@@ -64,9 +64,9 @@ Authorization: {{token}}
 X-Tenant-Code: MBC
 
 {
-  "name": "first",
+  "name": "First task",
   "attributes": {
-    "description": "first desc"
+    "description": "Description for the first task"
   }
 }
 
@@ -78,9 +78,8 @@ Authorization: {{token}}
 X-Tenant-Code: MBC
 
 {
-  "name": "First update1",
+  "name": "First update",
   "attributes": {
-    "description": "Descripton for first todo",
     "dueDate": "2024-10-30T03:59:43.590Z"
   }
 }
