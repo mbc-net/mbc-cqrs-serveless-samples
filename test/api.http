@@ -42,7 +42,7 @@ Accept: application/json
 Authorization: {{token}}
 
 ###
-GET {{apiBaseUrl}}/todo
+GET {{apiBaseUrl}}/todo?keyword=first
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
@@ -50,7 +50,7 @@ X-Tenant-Code: MBC
 
 
 ###
-GET {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
+GET {{apiBaseUrl}}/todo/TODO%23MBC/1
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
@@ -64,29 +64,28 @@ Authorization: {{token}}
 X-Tenant-Code: MBC
 
 {
-  "name": "first",
+  "name": "First task",
   "attributes": {
-    "description": "first desc"
+    "description": "Description for the task"
   }
 }
 
 ###
-PATCH {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
+PATCH {{apiBaseUrl}}/todo/TODO%23MBC/1
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
 X-Tenant-Code: MBC
 
 {
-  "name": "First update1",
+  "name": "First update",
   "attributes": {
-    "description": "Descripton for first todo",
     "dueDate": "2024-10-30T03:59:43.590Z"
   }
 }
 
 ###
-DELETE {{apiBaseUrl}}/todo/TODO%23MBC/01J9R0JPF04A5HPRQ5RR8GGYDY
+DELETE {{apiBaseUrl}}/todo/TODO%23MBC/1
 Accept: application/json
 Content-Type: application/json
 Authorization: {{token}}
