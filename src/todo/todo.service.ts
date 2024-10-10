@@ -9,6 +9,7 @@ import {
   toISOStringWithTimezone,
   VERSION_FIRST,
 } from '@mbc-cqrs-serverless/core'
+import { SequencesService } from '@mbc-cqrs-serverless/sequence'
 import {
   BadRequestException,
   Injectable,
@@ -40,6 +41,7 @@ export class TodoService {
     private readonly commandService: CommandService,
     private readonly dataService: DataService,
     private readonly prismaService: PrismaService,
+    private readonly seqService: SequencesService,
   ) {}
 
   async create(
@@ -48,7 +50,17 @@ export class TodoService {
   ): Promise<TodoDataEntity> {
     const { tenantCode } = getUserContext(opts.invokeContext)
     const pk = generateTodoPk(tenantCode)
-    const sk = generateTodoSk()
+
+    const { seq } = await this.seqService.genNewSequence(
+      {
+        tenantCode: tenantCode,
+        typeCode: 'todo',
+      },
+      opts,
+    )
+
+    const sk = `${seq}`
+
     const todo = new TodoCommandDto({
       pk,
       sk,
