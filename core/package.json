@@ -1,7 +1,7 @@
 {
   "name": "mbc-cqrs-serveless-samples",
   "version": "0.0.1",
-  "description": "Todo API sample uses core and seq packages",
+  "description": "Todo API sample uses the core package",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@mbc-cqrs-serverless/core": "^0.1.13-beta.0",
-    "@mbc-cqrs-serverless/sequence": "^0.1.13-beta.0",
     "@prisma/client": "^5.7.1"
   },
   "devDependencies": {
