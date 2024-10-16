@@ -67,3 +67,6 @@ for table in "${tables[@]}"; do
 	echo "Send a command to trigger command stream ${table}"
 	aws --endpoint=${endpoint} dynamodb put-item --table-name local-${APP_NAME}-${table}-command --item "{\"pk\": {\"S\": \"test\" }, \"sk\": { \"S\": \"${timestamp}\" }}"
 done
+
+echo "Send a command to trigger command stream tasks"
+aws --endpoint=http://localhost:8000 dynamodb put-item --table-name local-demo-tasks --item "{\"input\":{\"M\":{}},\"sk\":{\"S\":\"${timestamp}\"},\"pk\":{\"S\":\"test\"}}"
