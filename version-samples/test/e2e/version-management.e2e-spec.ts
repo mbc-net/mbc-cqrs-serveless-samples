@@ -2,53 +2,53 @@ import { TableType } from '@mbc-cqrs-serverless/core';
 import * as request from 'supertest';
 import { config, getTableName } from './config';
 
-describe('バージョン管理テスト', () => {
+describe('Version Management Test', () => {
   const API_PATH = '/items';
 
-  describe('順次バージョン管理', () => {
-    it('同一PK/SKの組み合わせで順次バージョンを正しく処理すること', async () => {
-      // 準備
+  describe('Sequential Version Management', () => {
+    it('should process sequential versions correctly for the same PK/SK combination', async () => {
+      // Preparation
       const payload = {
         pk: 'TEST#VERSION',
         sk: 'sequential#1',
         id: 'TEST#VERSION#sequential#1',
-        name: '順次バージョンテスト',
+        name: 'Sequential Version Test',
         version: 0,
         type: 'TEST',
       };
 
-      // 実行 - 作成
+      // Execution - Create
       const createRes = await request(config.apiBaseUrl)
         .post(API_PATH)
         .send(payload);
 
-      // 検証 - バージョン1で作成されること
+      // Verification - Should be created with version 1
       expect(createRes.statusCode).toBe(201);
       expect(createRes.body.version).toBe(1);
 
-      // 実行 - 更新
+      // Execution - Update
       const updateRes = await request(config.apiBaseUrl)
         .put(`${API_PATH}/${payload.id}`)
         .send({
           ...payload,
           version: 1,
-          name: '更新後の名前',
+          name: 'Updated Name',
         });
 
-      // 検証 - バージョン2にインクリメントされること
+      // Verification - Should increment to version 2
       expect(updateRes.statusCode).toBe(200);
       expect(updateRes.body.version).toBe(2);
     });
   });
 
-  describe('独立したバージョンシーケンス', () => {
-    it('異なるPK/SKの組み合わせで独立したバージョンシーケンスを維持すること', async () => {
-      // 準備
+  describe('Independent Version Sequences', () => {
+    it('should maintain independent version sequences for different PK/SK combinations', async () => {
+      // Preparation
       const item1 = {
         pk: 'TEST#SEQ1',
         sk: 'item#1',
         id: 'TEST#SEQ1#item#1',
-        name: 'シーケンス1',
+        name: 'Sequence 1',
         version: 0,
         type: 'TEST',
       };
@@ -57,12 +57,12 @@ describe('バージョン管理テスト', () => {
         pk: 'TEST#SEQ2',
         sk: 'item#1',
         id: 'TEST#SEQ2#item#1',
-        name: 'シーケンス2',
+        name: 'Sequence 2',
         version: 0,
         type: 'TEST',
       };
 
-      // 実行 - 両方のアイテムを作成
+      // Execution - Create both items
       const res1 = await request(config.apiBaseUrl)
         .post(API_PATH)
         .send(item1);
@@ -71,20 +71,20 @@ describe('バージョン管理テスト', () => {
         .post(API_PATH)
         .send(item2);
 
-      // 検証 - 両方ともバージョン1で開始すること
+      // Verification - Both should start with version 1
       expect(res1.body.version).toBe(1);
       expect(res2.body.version).toBe(1);
 
-      // 実行 - 最初のアイテムを更新
+      // Execution - Update first item
       const updateRes = await request(config.apiBaseUrl)
         .put(`${API_PATH}/${item1.id}`)
         .send({
           ...item1,
           version: 1,
-          name: '更新後のシーケンス1',
+          name: 'Updated Sequence 1',
         });
 
-      // 検証 - 最初のアイテムのバージョンが上がり、2番目は変わらないこと
+      // Verification - First item version should increase, second item should remain unchanged
       expect(updateRes.body.version).toBe(2);
 
       const getRes = await request(config.apiBaseUrl)
@@ -94,19 +94,19 @@ describe('バージョン管理テスト', () => {
     });
   });
 
-  describe('楽観的ロック', () => {
-    it('同時更新時にバージョン競合を適切に処理すること', async () => {
-      // 準備
+  describe('Optimistic Locking', () => {
+    it('should handle version conflicts appropriately during concurrent updates', async () => {
+      // Preparation
       const payload = {
         pk: 'TEST#VERSION',
         sk: 'conflict#1',
         id: 'TEST#VERSION#conflict#1',
-        name: '競合テスト',
+        name: 'Conflict Test',
         version: 0,
         type: 'TEST',
       };
 
-      // 実行 - アイテム作成
+      // Execution - Create item
       const createRes = await request(config.apiBaseUrl)
         .post(API_PATH)
         .send(payload);
@@ -114,28 +114,28 @@ describe('バージョン管理テスト', () => {
       expect(createRes.statusCode).toBe(201);
       expect(createRes.body.version).toBe(1);
 
-      // 実行 - 最初の更新は成功
+      // Execution - First update succeeds
       const update1 = await request(config.apiBaseUrl)
         .put(`${API_PATH}/${payload.id}`)
         .send({
           ...payload,
           version: 1,
-          name: '最初の更新',
+          name: 'First Update',
         });
 
-      // 実行 - 同じバージョンでの2回目の更新は失敗
+      // Execution - Second update with same version fails
       const update2 = await request(config.apiBaseUrl)
         .put(`${API_PATH}/${payload.id}`)
         .send({
           ...payload,
           version: 1,
-          name: '2回目の更新',
+          name: 'Second Update',
         });
 
-      // 検証
+      // Verification
       expect(update1.statusCode).toBe(200);
       expect(update1.body.version).toBe(2);
-      expect(update2.statusCode).toBe(409); // 競合エラー
+      expect(update2.statusCode).toBe(409); // Conflict error
     });
   });
 });
