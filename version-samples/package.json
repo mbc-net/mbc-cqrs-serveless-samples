@@ -1,0 +1,40 @@
+{
+  "name": "version-samples",
+  "version": "0.0.1",
+  "description": "Version management test samples for MBC CQRS Serverless Framework",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@mbc-cqrs-serverless/core": "^0.1.13-beta.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.5",
+    "@types/supertest": "^6.0.1",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
