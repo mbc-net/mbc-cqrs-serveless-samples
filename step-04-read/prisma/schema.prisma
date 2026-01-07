@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-1.0.x"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// Todo status enum
+enum TodoStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+// Todo model for RDS (MySQL) - synchronized from DynamoDB
+model Todo {
+  id         String   @id                        // Unique ID (generated from pk#sk)
+  cpk        String                              // Command partition key
+  csk        String                              // Command sort key (with version)
+  pk         String                              // Data partition key: TODO#tenantCode
+  sk         String                              // Data sort key: ULID
+  tenantCode String   @map("tenant_code")        // Tenant code for multi-tenancy
+  seq        Int      @default(0)                // Sequence number (for ordering)
+  code       String                              // Record code (same as sk)
+  name       String                              // Todo name/title
+  version    Int                                 // Version for optimistic locking
+  isDeleted  Boolean  @default(false) @map("is_deleted")  // Soft delete flag
+  createdBy  String   @default("") @map("created_by")     // Created by user
+  createdIp  String   @default("") @map("created_ip")     // Created from IP
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedBy  String   @default("") @map("updated_by")     // Updated by user
+  updatedIp  String   @default("") @map("updated_ip")     // Updated from IP
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+
+  // Todo-specific attributes
+  description String?    @default("") @map("description")  // Description
+  status      TodoStatus @default(PENDING) @map("status")  // Status
+  dueDate     DateTime?  @map("due_date")                  // Due date
+
+  // Indexes for efficient queries
+  @@unique([cpk, csk])           // Command table unique constraint
+  @@unique([pk, sk])             // Data table unique constraint
+  @@unique([tenantCode, code])   // Tenant + code unique constraint
+  @@index([tenantCode, name])    // Search by tenant and name
+  @@map("todos")                 // Table name in database
+}
