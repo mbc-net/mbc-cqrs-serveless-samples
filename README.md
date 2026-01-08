@@ -1,4 +1,4 @@
-![MBC CQRS serverless framework](https://mbc-net.github.io/mbc-cqrs-serverless-doc/img/mbc-cqrs-serverless.png)
+![MBC CQRS serverless framework](https://mbc-cqrs-serverless.mbc-net.com/img/mbc-cqrs-serverless.png)
 
 # MBC CQRS Serverless Framework Samples
 
@@ -61,7 +61,7 @@ npm run offline:sls
 
 ## Framework Packages
 
-These samples use the following MBC CQRS Serverless packages (v1.0.16):
+These samples use the following MBC CQRS Serverless packages (v1.0.17):
 
 - `@mbc-cqrs-serverless/core` - Core CQRS functionality
 - `@mbc-cqrs-serverless/sequence` - Sequence number generation
@@ -82,6 +82,6 @@ A detailed Japanese tutorial series is available:
 
 ## License
 
-Copyright &copy; 2024, Murakami Business Consulting, Inc. https://www.mbc-net.com/
+Copyright &copy; 2024-2025, Murakami Business Consulting, Inc. https://www.mbc-net.com/
 
 This project and sub projects are under the MIT License.
